@@ -1,0 +1,11 @@
+name: Global 60/40
+description: Transparent global equity and US investment-grade bond reference portfolio
+rebalance_frequency: quarterly
+
+constituents:
+  - ticker: VT
+    weight: 0.60
+  - ticker: BND
+    weight: 0.40
+
+cash_hurdle: BIL

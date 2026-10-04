@@ -1,0 +1,6 @@
+,model,expected_return,variance,volatility,sharpe_ratio,number_of_assets,weight_sum,success,message
+equal_weight,equal_weight,0.06227088830006262,0.007158317261093824,0.0846068393281171,0.5796635425028115,9,1.0,True,Deterministic equal-weight allocation constructed successfully.
+minimum_variance,global_minimum_variance,0.03113920817248017,0.001172913549813403,0.0342478254756912,,9,1.0,True,Optimization terminated successfully
+mean_variance,mean_variance,0.09731374317166284,0.011730496570431848,0.10830741696870001,0.7763674679897783,9,0.9999999999999996,True,Optimization terminated successfully
+target_return,target_return,0.07000000000000002,0.004177913414920018,0.06463678066642875,0.8783329138532837,9,1.0,True,Optimization terminated successfully
+maximum_sharpe,maximum_sharpe,0.0737368322872876,0.004742268329068117,0.06886412948021718,0.8786787061544179,9,0.999999999999996,True,Optimization terminated successfully

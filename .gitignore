@@ -1,0 +1,48 @@
+.DS_Store
+.env
+.env.*
+.venv/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.streamlit/secrets.toml
+__pycache__/
+*.egg-info/
+*.py[cod]
+*.log
+build/
+dist/
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Legacy local notebooks are superseded by the canonical study notebook.
+notebooks/01_eda.ipynb
+notebooks/02_professional_eda.ipynb
+
+# Reproducible generated outputs. Compact publication artifacts live in reports/.
+artifacts/
+data/interim/*
+data/processed/*
+data/raw/*
+data/manifests/*
+
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+!data/raw/.gitkeep
+
+# The self-contained HTML embeds Plotly and duplicates the compact Markdown report.
+reports/executive_summary.html
+
+README.es.md
+# Spanish editions are local companions; publish the English research only.
+*.es.md
+*.es.ipynb
+locales/es.json
+locales/es/
+reports/es/
+# Local reviews and migration snapshots are not publication inputs.
+.local/

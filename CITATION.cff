@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it using the metadata below."
+title: "Global Multi-Asset Portfolio Optimization"
+type: software
+authors:
+  - family-names: Valdes
+    given-names: Pablo
+version: 1.0.0
+date-released: 2026-08-06
+license: MIT
+repository-code: "https://github.com/pablovt3/portfolio_management_project"
+keywords:
+  - portfolio optimization
+  - quantitative finance
+  - walk-forward backtesting
+  - asset allocation
+  - robustness analysis

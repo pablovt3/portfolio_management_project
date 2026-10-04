@@ -1,0 +1,103 @@
+project:
+  name: Global Multi-Asset Portfolio Research
+  base_currency: USD
+
+study:
+  start_date: "2008-01-01"
+  end_date: "2026-01-01"
+  out_of_sample_start: "2011-01-01"
+
+data:
+  provider: yahoo_finance
+  frequency: 1d
+  price_field: Adj Close
+  auto_adjust: false
+
+eda:
+  periods_per_year: 252
+  rolling_volatility_window: 63
+  rolling_return_window: 252
+  rolling_correlation_window: 252
+  rolling_correlation_assets:
+    - VTI
+    - IEF
+  outlier_method: iqr
+  outlier_threshold: 3.0
+
+portfolio_construction:
+  sample_start: "2011-01-01"
+  periods_per_year: 252
+  expected_return_estimator: historical_mean
+  covariance_estimator: ledoit_wolf
+  risk_free_asset: BIL
+  min_weight: 0.0
+  max_weight: 0.35
+  risk_aversion: 4.0
+  target_return: 0.07
+  frontier_portfolios: 60
+
+backtesting:
+  lookback_periods: 756
+  rebalance_frequencies:
+    - monthly
+    - quarterly
+  band_thresholds:
+    - 0.025
+    - 0.05
+    - 0.075
+  band_estimation_frequency: monthly
+  transaction_cost_bps: 10.0
+  initial_value: 100.0
+  strategies:
+    - equal_weight
+    - minimum_variance
+    - mean_variance
+    - target_return
+    - maximum_sharpe
+
+robustness:
+  cost_scenarios_bps:
+    - 0.0
+    - 5.0
+    - 10.0
+    - 15.0
+    - 20.0
+    - 25.0
+  lookback_scenarios:
+    - 252
+    - 504
+    - 756
+    - 1008
+    - 1260
+  max_weight_scenarios:
+    - 0.20
+    - 0.25
+    - 0.30
+    - 0.35
+    - 0.40
+    - 0.50
+  primary_frequency: quarterly
+  drawdown_episodes: 5
+  regimes:
+    - name: pre_covid
+      label: Pre-COVID Expansion
+      start_date: "2011-01-01"
+      end_date: "2019-12-31"
+    - name: covid_shock_recovery
+      label: COVID Shock and Recovery
+      start_date: "2020-01-01"
+      end_date: "2021-12-31"
+    - name: inflation_rate_hikes
+      label: Inflation and Rate Hikes
+      start_date: "2022-01-01"
+      end_date: "2023-12-31"
+    - name: recent_period
+      label: Recent Period
+      start_date: "2024-01-01"
+      end_date: "2025-12-31"
+
+paths:
+  raw: data/raw
+  processed: data/processed
+  manifests: data/manifests
+  artifacts: artifacts

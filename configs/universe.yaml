@@ -1,0 +1,51 @@
+methodology: liquid_global_multi_asset_saa
+selection_as_of: "2026-08-06"
+base_currency: USD
+
+assets:
+  - ticker: VTI
+    name: Vanguard Total Stock Market ETF
+    sleeve: us_equity
+    role: Broad US equity growth exposure
+  - ticker: VEA
+    name: Vanguard FTSE Developed Markets ETF
+    sleeve: developed_ex_us_equity
+    role: Developed-market geographic diversification
+  - ticker: VWO
+    name: Vanguard FTSE Emerging Markets ETF
+    sleeve: emerging_market_equity
+    role: Emerging-market growth and diversification
+  - ticker: IEF
+    name: iShares 7-10 Year Treasury Bond ETF
+    sleeve: nominal_sovereign
+    role: Intermediate-duration nominal defense
+  - ticker: TIP
+    name: iShares TIPS Bond ETF
+    sleeve: inflation_linked_sovereign
+    role: Inflation-linked defense
+  - ticker: LQD
+    name: iShares iBoxx Investment Grade Corporate Bond ETF
+    sleeve: investment_grade_credit
+    role: Investment-grade credit income and spread exposure
+  - ticker: VNQ
+    name: Vanguard Real Estate ETF
+    sleeve: listed_real_estate
+    role: Listed real-asset and income exposure
+  - ticker: GLD
+    name: SPDR Gold Shares
+    sleeve: gold
+    role: Physical gold diversifier
+  - ticker: BIL
+    name: State Street SPDR Bloomberg 1-3 Month T-Bill ETF
+    sleeve: liquidity
+    role: Investable cash proxy and defensive allocation
+
+exclusions:
+  - individual_bonds
+  - derivatives
+  - leveraged_or_inverse_products
+  - exchange_traded_notes
+  - futures_based_broad_commodities
+  - cryptocurrencies
+  - high_yield_credit
+  - private_or_illiquid_assets

@@ -1,0 +1,9 @@
+name: pm_project
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - git+https://github.com/pablovt3/portfolio_management_module.git@main
+      - -e .[dev,dashboard,report,notebook]
