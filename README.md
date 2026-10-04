@@ -3,16 +3,35 @@
 A practical quant-finance study: do optimized portfolios offer a useful improvement over a
 simple global 60/40 policy once risk and trading costs are taken into account?
 
+<p align="center">
+  <a href="https://portfolio-management-project.streamlit.app/">
+    <img src="https://img.shields.io/badge/Open_live_dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white" alt="Open the live Streamlit dashboard">
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/pablovt3/portfolio_management_project/actions/workflows/quality.yml"><img src="https://github.com/pablovt3/portfolio_management_project/actions/workflows/quality.yml/badge.svg" alt="Quality checks"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-2ea44f.svg" alt="MIT license"></a>
+  <img src="https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white" alt="Python 3.12">
+</p>
+
 The workflow starts with prices, makes the estimation assumptions explicit, tests allocations
 without future data, and explains the resulting trade-offs. The goal is a defensible research
 process—not a claim that one model will always win.
 
 ## Start with the evidence
 
-- Open the [research notebook](notebooks/portfolio_optimization_study.ipynb) for a guided analysis.
-- Read the [executive note](reports/executive_summary.md) for the current calculated findings.
-- Run `streamlit run dashboard/app.py` to explore the same tables interactively.
-- See [methodology](docs/methodology.md) for definitions and limitations.
+| Explore | What you will find |
+|---|---|
+| **[Live dashboard](https://portfolio-management-project.streamlit.app/)** | Interactive explanation of the universe, benchmark, portfolio construction, out-of-sample results, risk, costs and robustness |
+| [Research notebook](notebooks/portfolio_optimization_study.ipynb) | A guided, reproducible analysis of the published evidence |
+| [Executive note](reports/executive_summary.md) | The current findings and their practical interpretation |
+| [Methodology](docs/methodology.md) | Definitions, assumptions and limitations |
+
+[![Open the live portfolio research dashboard](reports/figures/strategy_wealth.png)](https://portfolio-management-project.streamlit.app/)
+
+*Preview of the published out-of-sample wealth paths. Open the dashboard to inspect the full
+study, compare strategies and understand the benchmark.*
 
 ## The experiment
 
