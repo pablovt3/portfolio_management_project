@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Check out the study
@@ -19,8 +20,17 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - name: Configure read-only access to the core library
+        env:
+          PORTFOLIO_MODULE_DEPLOY_KEY: ${{ secrets.PORTFOLIO_MODULE_DEPLOY_KEY }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$PORTFOLIO_MODULE_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+
       - name: Install the core library
-        run: python -m pip install git+https://github.com/pablovt3/portfolio_management_module.git@main
+        run: python -m pip install 'git+ssh://git@github.com/pablovt3/portfolio_management_module.git@5da9533'
 
       - name: Install the study
         run: python -m pip install -e '.[dev,dashboard,report]'

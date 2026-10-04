@@ -1,5 +1,11 @@
 # Contributing
 
+The research currently depends on a private development version of
+`portfolio-management-module`. Repository CI receives read-only access through a dedicated
+deploy key pinned to a reviewed module commit. For security, GitHub does not expose that key
+to workflows opened from forks, so the quality job runs for `main` and same-repository pull
+requests while the module remains private.
+
 ## Development setup
 
 Install the core library and this study in editable mode:
