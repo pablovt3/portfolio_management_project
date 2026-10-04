@@ -106,8 +106,10 @@ Local Spanish equivalents use `README.es.md`, `*.es.ipynb` and `locales/es.json`
 ignored. The language selector appears when a local translation catalog is available.
 The English repository does not require these local files or link to missing translations.
 
-The Streamlit deployment installs this project together with the current `main` branch of
-`portfolio-management-module`, which supplies the walk-forward drift-band execution engine.
+The Streamlit deployment is an evidence viewer: it installs only the presentation dependencies
+declared in `dashboard/requirements.txt` and reads the checked-in report tables. Rebuilding the
+research still requires `portfolio-management-module`; the deployed app does not receive access
+to that private development repository.
 
 ## Scope and limits
 

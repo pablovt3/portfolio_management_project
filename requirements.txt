@@ -1,2 +1,0 @@
-git+https://github.com/pablovt3/portfolio_management_module.git@main
--e .[dashboard]
