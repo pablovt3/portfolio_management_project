@@ -111,4 +111,15 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
     assert exported is not None
     assert exported.summary_path.is_file()
     assert (exported.tables_directory / "estimation_windows.csv").is_file()
+    assert (exported.tables_directory / "strategy_tail_risk.csv").is_file()
     assert (exported.figures_directory / "strategy_wealth.html").is_file()
+    tail_risk = result.tail_risk()
+    assert tail_risk.index.tolist() == result.summary().index.tolist()
+    assert tail_risk.columns.tolist() == [
+        "historical_var",
+        "historical_expected_shortfall",
+        "parametric_var",
+        "parametric_expected_shortfall",
+    ]
+    assert (tail_risk >= 0.0).all().all()
+    assert result.summary().loc[:, tail_risk.columns].equals(tail_risk)

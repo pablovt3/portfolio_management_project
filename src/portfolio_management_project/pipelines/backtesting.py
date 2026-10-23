@@ -34,7 +34,7 @@ from portfolio_management.visualization import (
 
 from portfolio_management_project.config import ResearchConfig
 from portfolio_management_project.estimation import estimate_market
-from portfolio_management_project.evaluation import realized_sharpe
+from portfolio_management_project.evaluation import realized_sharpe, tail_risk_metrics
 from portfolio_management_project.exceptions import DataPipelineError
 from portfolio_management_project.inputs import read_prices
 
@@ -52,9 +52,10 @@ class BacktestingResult:
     figures: dict[str, BaseFigure]
     cash_returns: pd.Series
     allocation_audit: pd.DataFrame
+    tail_risk_confidence_level: float = 0.95
 
     def summary(self) -> pd.DataFrame:
-        """Use the same dated cash reference for every realized Sharpe."""
+        """Return performance and tail risk under common project conventions."""
         table = self.comparison.summary()
         for name, result in self.comparison.strategies.items():
             table.loc[name, "sharpe_ratio"] = realized_sharpe(
@@ -62,7 +63,21 @@ class BacktestingResult:
                 self.cash_returns,
                 result.periods_per_year,
             )
-        return table.drop(columns="risk_free_rate", errors="ignore")
+        table = table.drop(columns="risk_free_rate", errors="ignore")
+        return table.join(self.tail_risk())
+
+    def tail_risk(self) -> pd.DataFrame:
+        """Return one-period VaR and Expected Shortfall for every strategy."""
+        rows = {
+            name: tail_risk_metrics(
+                result.returns,
+                confidence_level=self.tail_risk_confidence_level,
+            )
+            for name, result in self.comparison.strategies.items()
+        }
+        table = pd.DataFrame.from_dict(rows, orient="index")
+        table.index.name = "strategy"
+        return table
 
     def performance(self) -> pd.DataFrame:
         """Return comparable net performance for publication."""
@@ -184,6 +199,7 @@ def export_backtesting_result(
 
     result.summary().to_csv(tables / "strategy_summary.csv")
     result.performance().to_csv(tables / "strategy_performance.csv")
+    result.tail_risk().to_csv(tables / "strategy_tail_risk.csv")
     result.comparison.trading_summary().to_csv(tables / "strategy_trading.csv")
     result.comparison.benchmark_summary().to_csv(tables / "strategy_benchmark_metrics.csv")
     result.comparison.returns().to_csv(tables / "strategy_returns.csv")
@@ -218,6 +234,9 @@ def export_backtesting_result(
         f"- Highest realized Sharpe ratio: {best_sharpe} ({sharpe[best_sharpe]:.3f}).\n"
         f"- Highest realized annualized return: {best_return} "
         f"({annualized_returns[best_return]:.2%}).\n"
+        f"- VaR and Expected Shortfall use a one-day horizon at "
+        f"{result.tail_risk_confidence_level:.0%} confidence and are reported as "
+        "non-negative return-loss magnitudes.\n"
         "- Every allocation uses a trailing window ending before its decision date; "
         "the exported estimation-window table is the audit trail.\n"
         "- The investable set remains fixed through time, but ETF selection was made "
