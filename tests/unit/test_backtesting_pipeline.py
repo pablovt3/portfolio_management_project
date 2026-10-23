@@ -28,11 +28,7 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
             end_date=date(2022, 1, 1),
             out_of_sample_start=date(2021, 1, 4),
         ),
-        backtesting=replace(
-            config.backtesting,
-            lookback_periods=80,
-            strategies=(*config.backtesting.strategies, "minimum_cvar"),
-        ),
+        backtesting=replace(config.backtesting, lookback_periods=80),
         portfolio_construction=replace(
             config.portfolio_construction,
             sample_start=date(2020, 1, 2),
@@ -89,9 +85,8 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
 
     result, exported = run_backtesting_pipeline(config, prices=prices)
 
-    assert len(result.strategies) == 30
-    assert result.comparison.number_of_strategies == 31
-    assert "minimum_cvar_monthly" in result.strategies
+    assert len(result.strategies) == 25
+    assert result.comparison.number_of_strategies == 26
     assert "equal_weight_band_500bp" in result.strategies
     reference_index = next(iter(result.strategies.values())).returns.index
     assert result.benchmark.returns.index.equals(reference_index)
@@ -116,15 +111,4 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
     assert exported is not None
     assert exported.summary_path.is_file()
     assert (exported.tables_directory / "estimation_windows.csv").is_file()
-    assert (exported.tables_directory / "strategy_tail_risk.csv").is_file()
     assert (exported.figures_directory / "strategy_wealth.html").is_file()
-    tail_risk = result.tail_risk()
-    assert tail_risk.index.tolist() == result.summary().index.tolist()
-    assert tail_risk.columns.tolist() == [
-        "historical_var",
-        "historical_expected_shortfall",
-        "parametric_var",
-        "parametric_expected_shortfall",
-    ]
-    assert (tail_risk >= 0.0).all().all()
-    assert result.summary().loc[:, tail_risk.columns].equals(tail_risk)

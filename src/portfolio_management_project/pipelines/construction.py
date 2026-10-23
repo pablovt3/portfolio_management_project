@@ -7,7 +7,6 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
-from portfolio_management.analytics import calculate_returns
 from portfolio_management.data import MarketData
 from portfolio_management.models import (
     CapitalAllocationLineResult,
@@ -21,7 +20,7 @@ from portfolio_management.visualization import (
     RiskContributionFigure,
 )
 
-from portfolio_management_project.config import CVAR_CONFIDENCE_LEVEL, ResearchConfig
+from portfolio_management_project.config import ResearchConfig
 from portfolio_management_project.estimation import estimate_market
 from portfolio_management_project.exceptions import DataPipelineError
 from portfolio_management_project.inputs import read_prices
@@ -77,9 +76,6 @@ def run_construction_pipeline(
     covariance = estimate.covariance
     risk_free_rate = estimate.cash_rate
     optimizer = estimate.optimizer
-    scenario_returns = calculate_returns(sample, method="simple")
-    if not isinstance(scenario_returns, pd.DataFrame):
-        raise TypeError("Construction prices must produce a return DataFrame.")
     optimizations = {
         "equal_weight": optimizer.equal_weight(),
         "minimum_variance": optimizer.minimum_variance(),
@@ -88,10 +84,6 @@ def run_construction_pipeline(
         ),
         "target_return": optimizer.target_return(config.portfolio_construction.target_return),
         "maximum_sharpe": optimizer.maximum_sharpe(),
-        "minimum_cvar": optimizer.minimum_cvar(
-            scenario_returns,
-            confidence_level=CVAR_CONFIDENCE_LEVEL,
-        ),
     }
     frontier = optimizer.efficient_frontier(
         n_portfolios=config.portfolio_construction.frontier_portfolios

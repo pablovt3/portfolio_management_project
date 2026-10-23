@@ -45,11 +45,9 @@ def test_construction_pipeline_runs_every_supported_model(tmp_path: Path) -> Non
         "mean_variance",
         "target_return",
         "maximum_sharpe",
-        "minimum_cvar",
     }
-    assert result.weights.shape == (9, 6)
+    assert result.weights.shape == (9, 5)
     assert np.allclose(result.weights.sum(), 1.0)
-    assert result.optimizations["minimum_cvar"].conditional_value_at_risk is not None
     assert len(result.frontier.expected_returns) == 60
     assert exported is not None
     assert exported.summary_path.is_file()

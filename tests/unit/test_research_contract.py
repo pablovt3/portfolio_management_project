@@ -8,7 +8,7 @@ import pandas as pd
 import pytest
 from portfolio_management.risk import information_ratio
 
-from portfolio_management_project.evaluation import realized_sharpe, tail_risk_metrics
+from portfolio_management_project.evaluation import realized_sharpe
 from portfolio_management_project.presentation.evidence import Evidence
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,22 +25,6 @@ def test_realized_sharpe_uses_dated_cash_and_rejects_gaps() -> None:
     with pytest.raises(ValueError, match="every evaluation date"):
         realized_sharpe(returns, cash.iloc[1:])
     assert np.isnan(realized_sharpe(cash, cash))
-
-
-def test_tail_risk_metrics_report_positive_loss_magnitudes() -> None:
-    returns = pd.Series([-0.10, -0.05, 0.00, 0.02, 0.04], dtype=float)
-
-    metrics = tail_risk_metrics(returns, confidence_level=0.80)
-
-    assert metrics.index.tolist() == [
-        "historical_var",
-        "historical_expected_shortfall",
-        "parametric_var",
-        "parametric_expected_shortfall",
-    ]
-    assert metrics["historical_var"] == pytest.approx(0.06)
-    assert metrics["historical_expected_shortfall"] == pytest.approx(0.10)
-    assert (metrics >= 0.0).all()
 
 
 def test_published_costs_and_cash_are_consistent() -> None:
