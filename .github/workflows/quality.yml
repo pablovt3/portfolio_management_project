@@ -30,7 +30,7 @@ jobs:
           ssh-keyscan -H github.com >> ~/.ssh/known_hosts
 
       - name: Install the core library
-        run: python -m pip install 'git+ssh://git@github.com/pablovt3/portfolio_management_module.git@5da9533'
+        run: python -m pip install 'git+ssh://git@github.com/pablovt3/portfolio_management_module.git@dc5d0ef'
 
       - name: Install the study
         run: python -m pip install -e '.[dev,dashboard,report]'
