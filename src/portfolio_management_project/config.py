@@ -10,6 +10,8 @@ from typing import Any
 
 import yaml
 
+CVAR_CONFIDENCE_LEVEL = 0.95
+
 
 @dataclass(frozen=True)
 class ProjectSettings:
@@ -147,6 +149,7 @@ class BacktestingSettings:
             "mean_variance",
             "target_return",
             "maximum_sharpe",
+            "minimum_cvar",
         }
         if not self.strategies:
             raise ValueError("At least one backtest strategy is required.")

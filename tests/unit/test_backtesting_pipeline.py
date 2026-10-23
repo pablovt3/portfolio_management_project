@@ -28,7 +28,11 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
             end_date=date(2022, 1, 1),
             out_of_sample_start=date(2021, 1, 4),
         ),
-        backtesting=replace(config.backtesting, lookback_periods=80),
+        backtesting=replace(
+            config.backtesting,
+            lookback_periods=80,
+            strategies=(*config.backtesting.strategies, "minimum_cvar"),
+        ),
         portfolio_construction=replace(
             config.portfolio_construction,
             sample_start=date(2020, 1, 2),
@@ -85,8 +89,9 @@ def test_backtesting_pipeline_runs_all_models_and_frequencies(tmp_path: Path) ->
 
     result, exported = run_backtesting_pipeline(config, prices=prices)
 
-    assert len(result.strategies) == 25
-    assert result.comparison.number_of_strategies == 26
+    assert len(result.strategies) == 30
+    assert result.comparison.number_of_strategies == 31
+    assert "minimum_cvar_monthly" in result.strategies
     assert "equal_weight_band_500bp" in result.strategies
     reference_index = next(iter(result.strategies.values())).returns.index
     assert result.benchmark.returns.index.equals(reference_index)

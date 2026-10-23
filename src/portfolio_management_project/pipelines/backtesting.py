@@ -32,7 +32,7 @@ from portfolio_management.visualization import (
     StrategyWealthComparisonFigure,
 )
 
-from portfolio_management_project.config import ResearchConfig
+from portfolio_management_project.config import CVAR_CONFIDENCE_LEVEL, ResearchConfig
 from portfolio_management_project.estimation import estimate_market
 from portfolio_management_project.evaluation import realized_sharpe, tail_risk_metrics
 from portfolio_management_project.exceptions import DataPipelineError
@@ -296,6 +296,14 @@ def _weight_estimator(
             return optimizer.target_return(target).weights
         if strategy == "maximum_sharpe":
             return optimizer.maximum_sharpe().weights
+        if strategy == "minimum_cvar":
+            scenario_returns = calculate_returns(training_prices, method="simple")
+            if not isinstance(scenario_returns, pd.DataFrame):
+                raise TypeError("Training prices must produce a return DataFrame.")
+            return optimizer.minimum_cvar(
+                scenario_returns,
+                confidence_level=CVAR_CONFIDENCE_LEVEL,
+            ).weights
         raise ValueError(f"Unsupported walk-forward strategy: {strategy}.")
 
     return estimate
